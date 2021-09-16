@@ -1,0 +1,8 @@
+[
+  {
+    "ParameterKey": "S3BucketName", "ParameterValue": "poc-cloudformation-lambda-bucket"
+  },
+  {
+    "ParameterKey": "S3ObjectKey", "ParameterValue": "build/build-package.zip"
+  }
+]

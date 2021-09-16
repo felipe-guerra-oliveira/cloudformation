@@ -1,0 +1,4 @@
+aws cloudformation create-stack --stack-name poc-lambda-s3 \
+  --template-body file://cloudformation.yml \
+  --parameters file://params.json \
+  --profile sysadmin --region sa-east-1

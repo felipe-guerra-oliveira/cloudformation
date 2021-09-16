@@ -1,0 +1,26 @@
+[
+  {
+    "ParameterKey": "FunctionName", "ParameterValue": "poc-lambda-function-cloudformation"
+  },
+  {
+    "ParameterKey": "Handler", "ParameterValue": "index.main"
+  },
+  {
+    "ParameterKey": "MemorySize", "ParameterValue": "128"
+  },
+  {
+    "ParameterKey": "PackageType", "ParameterValue": "Zip"
+  },
+  {
+    "ParameterKey": "Runtime", "ParameterValue": "python3.9"
+  },
+  {
+    "ParameterKey": "Timeout", "ParameterValue": "30"
+  },
+  {
+    "ParameterKey": "RoleDescription", "ParameterValue": "Role que é assumida pela função lambda para chamar os outros serviços da AWS"
+  },
+  {
+    "ParameterKey": "RoleName", "ParameterValue": "poc-cloudformation-lambda-role"
+  }
+]

@@ -1,0 +1,90 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+#https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
+Description: >
+  Primeiro template CF
+  para construir a infraestrutura de uma função Lambda
+
+Parameters:
+  FunctionName:
+    Type: String
+
+  Handler:
+    Type: String
+
+  MemorySize:
+    Type: Number
+
+  PackageType:
+    Type: String
+
+  Runtime:
+    Type: String
+
+  Timeout:
+    Type: Number
+
+  RoleDescription:
+    Type: String
+
+  RoleName:
+    Type: String
+
+Resources:
+
+  RoleExecutionFuncaoLambda:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      Description: !Ref RoleDescription
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /poc/lambda/
+      Policies:
+        - PolicyName: poc-lambda-allow-s3-access-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: '*'
+                Resource: !ImportValue S3BucketFuncaoLambda
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  MinhaFuncaoLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !ImportValue S3BucketName
+        S3Key: !ImportValue S3ObjectKey
+      Runtime: !Ref Runtime
+      FunctionName: !Ref FunctionName
+      Handler: !Ref Handler
+      MemorySize: !Ref MemorySize
+      PackageType: !Ref PackageType
+      Timeout: !Ref Timeout
+      Description: Minha primeira função Lambda sendo criada via CF - Python 3.9
+      Role: !GetAtt RoleExecutionFuncaoLambda.Arn
+
+  ApiGatewayPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt MinhaFuncaoLambda.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:APIGatewayLambda/*/GET/
+
+Outputs:
+  MinhaFuncaoLambda:
+    Description: Exporta o valor da ARN para ser usada em outro template
+    Value: !GetAtt MinhaFuncaoLambda.Arn
+    Export:
+      Name: MinhaFuncaoLambda

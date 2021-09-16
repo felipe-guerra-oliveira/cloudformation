@@ -1,0 +1,86 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_ApiGateway.html
+Description: >
+  Primeiro template CF
+  para construir uma API (API Gateway)
+
+Parameters:
+  NomeApi:
+    Type: String
+
+Resources:
+
+  PoCRESTApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: Minha primeira REST API consruída usando CloudFormation
+      Name: !Ref NomeApi
+      ApiKeySourceType: HEADER
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Mode: merge
+      Body:
+        #https://swagger.io/docs/specification/2-0/basic-structure/
+        swagger: 2.0
+        info:
+          version: 1.0.0
+          title: !Ref NomeApi
+        basePath: /poc
+        schemes:
+          - https
+        paths:
+          /test:
+            get:
+              description: retorna uma lista de teste
+              produces:
+                - application/json
+              responses:
+                "200":
+                  description: OK
+        definitions:
+          Empty:
+            type: object
+      Tags:
+        - Key: Projeto
+          Value: CloudFormationPoC
+
+  TestResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref PoCRESTApi
+      ParentId: !GetAtt PoCRESTApi.RootResourceId
+      PathPart: test
+
+  GetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref PoCRESTApi
+      ResourceId: !Ref TestResource
+      AuthorizationType: NONE
+      OperationName: GetPoCTest
+      Integration:
+        Type: MOCK
+      ApiKeyRequired: no
+      HttpMethod: GET
+      MethodResponses:
+        - StatusCode: 200
+
+  StageDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: Meu primeiro deploy da API
+      RestApiId: !Ref PoCRESTApi
+      StageName: dev
+      StageDescription:
+        Description: Dev stage
+        MethodSettings:
+          - HttpMethod: GET
+            ResourcePath: /test
+
+Outputs:
+  NomeApi:
+    Description: Nome da API
+    Value: !Ref PoCRESTApi

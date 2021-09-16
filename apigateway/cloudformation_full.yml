@@ -1,0 +1,88 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+#https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_ApiGateway.html
+Description: >
+  Primeiro template CF
+  para construir uma API integrada com uma função Lambda
+
+Parameters:
+  NomeApi:
+    Type: String
+
+Resources:
+
+  RESTApiLambdaFunction:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Description: REST API consruída usando CloudFormation para integragar com Lambda Function
+      Name: !Ref NomeApi
+      ApiKeySourceType: HEADER
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Mode: merge
+      # Body:
+      #   #https://swagger.io/docs/specification/2-0/basic-structure/
+      #   swagger: 2.0
+      #   info:
+      #     version: 1.0.0
+      #     title: !Ref NomeApi
+      #   basePath: /api
+      #   schemes:
+      #     - https
+      #   paths:
+      #     /poc:
+      #       get:
+      #         description: retorna uma lista de teste
+      #         produces:
+      #           - application/json
+      #         responses:
+      #           "200":
+      #             description: OK
+      # definitions:
+      #   Empty:
+      #     type: object
+      Tags:
+        - Key: Projeto
+          Value: CloudFormationPoC
+
+  ApiResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RESTApiLambdaFunction
+      ParentId: !GetAtt RESTApiLambdaFunction.RootResourceId
+      PathPart: poc
+
+  GetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RESTApiLambdaFunction
+      ResourceId: !Ref ApiResource
+      AuthorizationType: NONE
+      OperationName: GetLambda
+      Integration:
+        Type: AWS_PROXY
+        Uri: !Sub
+          - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations"
+          - {LambdaArn: !ImportValue MinhaFuncaoLambda}
+        TimeoutInMillis: 29000
+        IntegrationHttpMethod: GET
+      ApiKeyRequired: no
+      HttpMethod: GET
+      MethodResponses:
+        - StatusCode: 200
+
+  StageDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      Description: Meu primeiro deploy da API
+      RestApiId: !Ref RESTApiLambdaFunction
+      StageName: dev
+      StageDescription:
+        Description: Dev stage
+        MethodSettings:
+          - HttpMethod: GET
+            ResourcePath: /poc
+
+#Outputs:
