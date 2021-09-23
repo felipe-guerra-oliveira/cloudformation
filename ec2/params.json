@@ -1,0 +1,7 @@
+[
+  {"ParameterKey": "VPCName",                        "ParameterValue": "Vpc-A"},
+  {"ParameterKey": "CidrBlock",                      "ParameterValue": "172.0.0.1/16"},
+  {"ParameterKey": "EnableDnsHostnames",             "ParameterValue": "true"},
+  {"ParameterKey": "EnableDnsSupport",               "ParameterValue": "true"},
+  {"ParameterKey": "InstanceTenancy",                 "ParameterValue": "default"}
+]

@@ -1,0 +1,45 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+#https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpc.html
+Description: >
+  Template CF para construir uma instância EC2
+  e toda estrutura básica de uma VPC
+
+Parameters:
+  VPCName:
+    Type: String
+
+  CidrBlock:
+    Type: String
+    Default: 10.0.0.0/16
+
+  EnableDnsHostnames:
+    Type: String
+    Default: "true"
+
+  EnableDnsSupport:
+    Type: String
+    Default: "true"
+
+  InstanceTenancy:
+    Type: String
+    Default: "default"
+
+Resources:
+  MinhaVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref CidrBlock
+      EnableDnsHostnames: !Ref EnableDnsHostnames
+      EnableDnsSupport: !Ref EnableDnsSupport
+      InstanceTenancy: !Ref InstanceTenancy
+      Tags:
+        - Key: Name
+          Value: !Ref VPCName
+
+Outputs:
+  MinhaVPC:
+    Description: Exporta o valor do ID da VPC criada para ser utilizada por outros stacks
+    Value: !Ref MinhaVPC
+    Export:
+      Name: MinhaPrimeiraVPC
