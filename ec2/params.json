@@ -1,7 +1,16 @@
 [
-  {"ParameterKey": "VPCName",                        "ParameterValue": "Vpc-A"},
+  {"ParameterKey": "VPCName",                        "ParameterValue": "vpc-poc-A"},
   {"ParameterKey": "CidrBlock",                      "ParameterValue": "172.0.0.1/16"},
   {"ParameterKey": "EnableDnsHostnames",             "ParameterValue": "true"},
   {"ParameterKey": "EnableDnsSupport",               "ParameterValue": "true"},
-  {"ParameterKey": "InstanceTenancy",                 "ParameterValue": "default"}
+  {"ParameterKey": "InstanceTenancy",                "ParameterValue": "default"},
+  {"ParameterKey": "SubnetPublicaAssignIpv6",        "ParameterValue": "false"},
+  {"ParameterKey": "SubnetPublicaAZ",                "ParameterValue": "sa-east-1a"},
+  {"ParameterKey": "SubnetPublicaCidrBlock",         "ParameterValue": "172.0.0.1/24"},
+  {"ParameterKey": "SubnetPublicaPublicIpOnLaunch",  "ParameterValue": "false"},
+  {"ParameterKey": "EC2SecurityGroupName",           "ParameterValue": "SSHTrafficAllowedSG"},
+  {"ParameterKey": "EC2SecurityGroupIP",             "ParameterValue": "189.120.78.248/32"},
+  {"ParameterKey": "MinhaPrimeiraEC2Name",           "ParameterValue": "minha-primeira-instancia"},
+  {"ParameterKey": "MinhaPrimeiraEC2Tenancy",        "ParameterValue": "default"},
+  {"ParameterKey": "MinhaPrimeiraEC2KeyPair",        "ParameterValue": "poc-vpc-ec2-keypair"}
 ]
