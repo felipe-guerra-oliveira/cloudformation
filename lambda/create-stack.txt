@@ -3,3 +3,9 @@ aws cloudformation create-stack --stack-name poc-lambda-function \
   --parameters file://params.json \
   --capabilities CAPABILITY_NAMED_IAM \
   --profile sysadmin --region sa-east-1
+
+  aws cloudformation create-stack --stack-name poc-ec2manager-lambda-stack \
+    --template-body file://ec2manager-cloudformation.yml \
+    --parameters file://params-ec2manager.json \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --profile sysadmin --region sa-east-1

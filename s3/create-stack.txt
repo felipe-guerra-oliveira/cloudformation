@@ -2,3 +2,9 @@ aws cloudformation create-stack --stack-name poc-lambda-s3 \
   --template-body file://cloudformation.yml \
   --parameters file://params.json \
   --profile sysadmin --region sa-east-1
+
+
+aws cloudformation create-stack --stack-name poc-lambda-ec2manager \
+  --template-body file://cloudformation-ec2manager.yml \
+  --parameters file://params-ec2manager.json \
+  --profile sysadmin --region sa-east-1

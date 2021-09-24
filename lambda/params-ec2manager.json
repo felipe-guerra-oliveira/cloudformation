@@ -1,0 +1,26 @@
+[
+  {
+    "ParameterKey": "FunctionName", "ParameterValue": "poc-ec2manager-function-cloudformation"
+  },
+  {
+    "ParameterKey": "Handler", "ParameterValue": "ec2_manager.cloudwatch_handler"
+  },
+  {
+    "ParameterKey": "MemorySize", "ParameterValue": "128"
+  },
+  {
+    "ParameterKey": "PackageType", "ParameterValue": "Zip"
+  },
+  {
+    "ParameterKey": "Runtime", "ParameterValue": "python3.9"
+  },
+  {
+    "ParameterKey": "Timeout", "ParameterValue": "30"
+  },
+  {
+    "ParameterKey": "RoleDescription", "ParameterValue": "Role que é assumida pela função lambda para chamar os outros serviços da AWS"
+  },
+  {
+    "ParameterKey": "RoleName", "ParameterValue": "poc-ec2manager-lambda-role"
+  }
+]

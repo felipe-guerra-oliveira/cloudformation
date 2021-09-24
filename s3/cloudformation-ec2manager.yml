@@ -1,0 +1,40 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+#https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
+Description: >
+  Faz o deploy da função Lambda responsável por
+  fazer a gestão das instâncias EC2
+
+Parameters:
+
+  S3BucketName:
+    Type: String
+
+  S3ObjectKeyEc2Manager:
+    Type: String
+
+Resources:
+
+  S3BucketFuncaoLambda:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref S3ObjectKeyEc2Manager
+      AccessControl: Private
+
+Outputs:
+  S3ObjectKey:
+    Value: !Ref S3ObjectKeyEc2Manager
+    Export:
+      Name: S3ObjectKeyEc2Manager
+
+  S3BucketName:
+    Value: !Ref S3BucketName
+    Export:
+      Name: S3EC2ManagerBucketName
+
+  S3BucketFuncaoLambda:
+    Description: ARN do bucket S3 utilizado para armazenar o source-code
+    Value: !GetAtt S3BucketFuncaoLambda.Arn
+    Export:
+      Name: S3BucketEC2ManagerFunction

@@ -3,6 +3,6 @@
     "ParameterKey": "S3BucketName", "ParameterValue": "poc-cloudformation-lambda-bucket"
   },
   {
-    "ParameterKey": "S3ObjectKeyEc2Manager", "ParameterValue": "build/ec2-manager.zip"
+    "ParameterKey": "S3ObjectKeyEc2Manager", "ParameterValue": "build/lambda/ec2-manager.zip"
   }
 ]

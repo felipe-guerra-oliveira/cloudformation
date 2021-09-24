@@ -1,5 +1,5 @@
-aws cloudformation create-stack --stack-name poc-api-lambda \
+aws cloudformation create-stack --stack-name poc-vpc-stack \
   --template-body file://cloudformation.yml \
   --parameters file://params.json \
-  --on-failure DELETE
+  --on-failure DELETE \
   --profile sysadmin --region sa-east-1
