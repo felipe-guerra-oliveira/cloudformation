@@ -1,0 +1,95 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+#https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/aws-resource-ec2-vpc.html
+Description: >
+  Template CF para construir a infraestrutura necessária ao
+  CodeBuild
+
+Parameters:
+  EC2ManagerLambdaBuild:
+    Type: String
+  #   Default: "default"
+
+  EC2ManagerLambdaSourceCode:
+    Type: String
+
+  EC2ManagerLambdaBuildDesc:
+    Type: String
+
+  CodeBuildServiceRoleName:
+    Type: String
+
+  CodeBuildServiceRoleDesc:
+    Type: String
+
+  CodeBuildSourceCredential:
+    Type: String
+
+Resources:
+  RoleExecutionCodeBuild:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref CodeBuildServiceRoleName
+      Description: !Ref CodeBuildServiceRoleDesc
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codebuild.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /poc/codebuild/
+      Policies:
+        - PolicyName: poc-codebuild-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+  MinhaPoCBuildCredential:
+    Type: AWS::CodeBuild::SourceCredential
+    Properties:
+      AuthType: PERSONAL_ACCESS_TOKEN
+      ServerType: GITHUB
+      Token: !Ref CodeBuildSourceCredential
+
+  MinhaPoCBuildProject:
+    Type: AWS::CodeBuild::Project
+    DependsOn: MinhaPoCBuildCredential
+    Properties:
+      Name: !Ref EC2ManagerLambdaBuild
+      Description: !Ref EC2ManagerLambdaBuildDesc
+      Artifacts:
+        Type: NO_ARTIFACTS
+      QueuedTimeoutInMinutes: 5
+      Source:
+        Location: !Ref EC2ManagerLambdaSourceCode
+        Type: GITHUB
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        PrivilegedMode: "false"
+        Type: LINUX_CONTAINER
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: PUSH
+      ServiceRole: !GetAtt RoleExecutionCodeBuild.Arn
+      Tags:
+        - Key: Project
+          Value: POC
+
+Outputs:
+  MinhaPoCBuildProject:
+    Value: !Ref MinhaPoCBuildProject

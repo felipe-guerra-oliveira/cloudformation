@@ -1,0 +1,8 @@
+[
+  {"ParameterKey": "EC2ManagerLambdaBuild",          "ParameterValue": "ec2manager-lambda-poc-build"},
+  {"ParameterKey": "EC2ManagerLambdaSourceCode",     "ParameterValue": "https://github.com/felipe-guerra-oliveira/poc_aws_lambda.git"},
+  {"ParameterKey": "EC2ManagerLambdaBuildDesc",      "ParameterValue": "Projeto de build para a função Lambda responsável por gerenciar as instâncias EC2"},
+  {"ParameterKey": "CodeBuildServiceRoleName",       "ParameterValue": "poc-codebuild-ec2manager-cloudformation"},
+  {"ParameterKey": "CodeBuildServiceRoleDesc",       "ParameterValue": "IAM Role necessária para acessar os outros serviços da AWS"},
+  {"ParameterKey": "CodeBuildSourceCredential",      "ParameterValue": "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"}
+]
