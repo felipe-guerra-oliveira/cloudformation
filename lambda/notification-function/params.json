@@ -1,0 +1,13 @@
+[
+  {"ParameterKey": "FunctionName", "ParameterValue": "poc-lambda-notification-function"},
+  {"ParameterKey": "FunctionDesc", "ParameterValue": "Função responsável por se integrar com o Slack"},
+  {"ParameterKey": "Handler", "ParameterValue": "index.main"},
+  {"ParameterKey": "MemorySize", "ParameterValue": "128"},
+  {"ParameterKey": "PackageType", "ParameterValue": "Zip"},
+  {"ParameterKey": "Runtime", "ParameterValue": "python3.9"},
+  {"ParameterKey": "Timeout", "ParameterValue": "30"},
+  {"ParameterKey": "RoleDescription", "ParameterValue": "Role que é assumida pela função lambda para chamar os outros serviços da AWS" },
+  {"ParameterKey": "RoleName", "ParameterValue": "poc-notification-function-role"},
+  {"ParameterKey": "S3ObjectKey", "ParameterValue": "build/notification-function.zip"},
+  {"ParameterKey": "NotificationServiceURL", "ParameterValue": "https://hooks.slack.com/services/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"}
+]
